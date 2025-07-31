@@ -1,0 +1,200 @@
+/* === Full viewport and layout setup === */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* prevent body scroll, internal areas can scroll */
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(120deg, #f5f6fa 0%, #e2e6ef 100%);
+}
+
+/* Header */
+.header {
+  background: linear-gradient(90deg, #374151 80%, #6366f1 100%);
+  color: #fff;
+  padding: 1.5rem 2rem;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 12px rgba(55,65,81,0.07);
+  flex-shrink: 0;
+}
+
+/* The container for sidebar + main content */
+.app-container {
+  display: flex;
+  flex: 1 1 auto;
+  height: calc(100% - 72px); /* Assuming header height ~72px */
+  background: #fff;
+  overflow: hidden; /* Contains scroll internally */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #242f3d;
+  color: #fff;
+  padding: 2rem 1.2rem;
+  box-shadow: 2px 0 10px rgba(36,47,61,0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav li {
+  padding: 1rem 0;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color .2s;
+}
+
+.sidebar nav li:hover {
+  color: #5b84e8;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1 1 auto;
+  background: transparent;
+  padding: 2.5rem 4vw 2rem 3vw;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* === Inventory List styles: POP OUT + FOCUSABLE === */
+.inventory-list {
+  background: linear-gradient(135deg, #6c63ff 0%, #5b84e8 100%);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(101, 67, 255, 0.4);
+  color: white;
+  max-width: 700px;
+  margin: 0 auto;
+  transition: box-shadow 0.3s ease-in-out;
+  outline-offset: 4px;
+  outline: none; /* no outline by default */
+}
+
+.inventory-list:hover,
+.inventory-list:focus-within {
+  box-shadow: 0 12px 48px rgba(101, 67, 255, 0.7);
+}
+
+/* Referential focus style for accessibility */
+.inventory-list:focus-visible {
+  outline: 3px solid #FFD700; /* Gold colored outline */
+  outline-offset: 4px;
+}
+
+/* Heading */
+.inventory-list h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* List itself */
+.inventory-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.15);
+  box-shadow: inset 0 3px 10px rgba(255,255,255,0.2);
+}
+
+/* Inventory item cards */
+.inventory-item {
+  background: rgba(255,255,255,0.25);
+  margin-bottom: 12px;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(101, 67, 255, 0.35);
+  color: #3b3054;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.25s ease, transform 0.3s ease;
+  cursor: default;
+}
+
+.inventory-item:hover {
+  background: rgba(255,255,255,0.4);
+  transform: translateX(6px);
+  box-shadow: 0 6px 18px rgba(101, 67, 255, 0.55);
+}
+
+.inventory-item span {
+  font-size: 1.1rem;
+  color: #240c7f;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+}
+
+/* Buttons in inventory items */
+.inventory-item button {
+  background: linear-gradient(90deg, #d96aff, #9c42ff);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 18px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 10px;
+  box-shadow: 0 2px 10px rgba(156, 66, 255, 0.55);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inventory-item button:hover {
+  background: linear-gradient(90deg, #9c42ff, #6f23d8);
+  box-shadow: 0 4px 18px rgba(111, 35, 216, 0.85);
+}
+
+/* Responsive adjustment */
+@media (max-width: 800px) {
+  .app-container {
+    flex-direction: column;
+    height: 100%;
+  }
+  .sidebar {
+    width: 100%;
+    min-height: unset;
+    padding: 1rem .5rem;
+    box-shadow: none;
+  }
+  .main-content {
+    margin: 0;
+    padding: 1.5rem 1vw;
+    border-radius: 0;
+    overflow-y: auto;
+    height: 100%;
+  }
+  .inventory-list {
+    max-width: 100%;
+    margin: 1rem 0;
+    padding: 1.5rem;
+  }
+}
