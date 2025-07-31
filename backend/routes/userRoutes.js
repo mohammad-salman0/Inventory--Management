@@ -1,24 +1,21 @@
+// routes/userRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const auth = require('../middleware/auth');
 
-// Create new user
-router.post('/register', async (req, res) => {
+// Get all users - admin only
+router.get('/', auth(['admin']), async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    res.json({ message: 'User created successfully' });
+    const users = await User.find({}, '-password');
+    res.json({ users });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to fetch users' });
   }
 });
 
-// Login (basic - no token)
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email, password });
-  if (user) res.json({ message: 'Login successful' });
-  else res.status(401).json({ error: 'Invalid credentials' });
-});
+// Update user (optional)
 
 module.exports = router;

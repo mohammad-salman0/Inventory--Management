@@ -1,36 +1,31 @@
 // routes/inventoryRoutes.js
+
 const express = require('express');
 const router = express.Router();
+const Product = require('../models/Product');
+const auth = require('../middleware/auth');
 
-let inventory = []; // temporary in-memory DB
-let id = 1;
+// GET inventory list with optional low-stock filter
+router.get('/', auth(['admin', 'staff']), async (req, res) => {
+  try {
+    // Optional query param to filter low stock
+    const lowStockThreshold = parseInt(req.query.lowStockThreshold) || 5;
 
-router.get('/', (req, res) => {
-  res.json(inventory);
-});
-
-router.post('/', (req, res) => {
-  const { name, price, quantity } = req.body;
-  if (!name || !price || !quantity) {
-    return res.status(400).json({ error: 'All fields are required' });
+    const products = await Product.find();
+    const inventory = products.map((p) => ({
+      _id: p._id,
+      name: p.name,
+      sku: p.sku,
+      price: p.price,
+      quantity: p.quantity,
+      category: p.category,
+      imageUrl: p.imageUrl,
+      lowStock: p.quantity <= lowStockThreshold,
+    }));
+    res.json({ message: 'Inventory fetched', data: inventory });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch inventory' });
   }
-  const newItem = { id: id++, name, price, quantity };
-  inventory.push(newItem);
-  res.status(201).json(newItem);
 });
-
-// DELETE from in-memory inventory
-router.delete('/:id', (req, res) => {
-  const itemId = parseInt(req.params.id);
-  const index = inventory.findIndex(item => item.id === itemId);
-
-  if (index === -1) {
-    return res.status(404).json({ error: 'Item not found' });
-  }
-
-  inventory.splice(index, 1);
-  res.json({ message: 'Item deleted' });
-});
-
 
 module.exports = router;

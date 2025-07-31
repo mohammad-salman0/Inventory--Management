@@ -1,54 +1,50 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import Home from "./pages/Home";
-import DashboardPage from "./pages/DashboardPage";
-import InventoryPage from "./pages/InventoryPage";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import LoginPage from "./components/LoginPage";  // Make sure you have LoginPage.jsx created
-import SalesPage from "./pages/SalesPage";
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 
-import './styles/App.css';
+import Dashboard from './pages/Dashboard';
+import Inventory from './pages/Inventory';
+import Orders from './pages/Orders';
+import Sales from './pages/Sales';
+import Reports from './pages/Reports';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
-function App() {
-  // Simple user state to simulate authentication
-  const [user, setUser] = useState(null);
-
-  const handleLogin = (userData) => {
-    setUser(userData);
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-  };
-
-  if (!user) {
-    // Show login page until logged in
-    return <LoginPage onLogin={handleLogin} />;
-  }
+const App = () => {
+  const token = localStorage.getItem('token');
+  const isAuthenticated = Boolean(token);
 
   return (
     <Router>
-      <div className="App">
-        <Header user={user} onLogout={handleLogout} />
-        <div className="app-container">
-          <Sidebar />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/inventory" element={<InventoryPage />} />
-              
-              {/* Redirect unknown routes to Home */}
-              <Route path="*" element={<Navigate to="/" />} />
-              <Route path="/sales" element={<SalesPage />} />
-            </Routes>
-          </main>
-        </div>
+      {isAuthenticated && <Header />}
+
+      <div style={{ display: 'flex' }}>
+        {isAuthenticated && <Sidebar />}
+        <main style={{ flexGrow: 1, padding: '20px' }}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            {isAuthenticated ? (
+              <>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/inventory" element={<Inventory />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/sales" element={<Sales />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            ) : (
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            )}
+          </Routes>
+        </main>
       </div>
     </Router>
   );
-}
+};
 
 export default App;
