@@ -1,4 +1,4 @@
-/* === Full viewport and layout setup === */
+
 html, body, #root {
   height: 100%;
   width: 100%;
@@ -38,9 +38,9 @@ html, body, #root {
 .app-container {
   display: flex;
   flex: 1 1 auto;
-  height: calc(100% - 72px); /* Assuming header height ~72px */
+  height: calc(100% - 72px); 
   background: #fff;
-  overflow: hidden; /* Contains scroll internally */
+  overflow: hidden;
 }
 
 /* Sidebar */
@@ -92,7 +92,7 @@ html, body, #root {
   margin: 0 auto;
   transition: box-shadow 0.3s ease-in-out;
   outline-offset: 4px;
-  outline: none; /* no outline by default */
+  outline: none; 
 }
 
 .inventory-list:hover,
@@ -102,7 +102,7 @@ html, body, #root {
 
 /* Referential focus style for accessibility */
 .inventory-list:focus-visible {
-  outline: 3px solid #FFD700; /* Gold colored outline */
+  outline: 3px solid #FFD700; 
   outline-offset: 4px;
 }
 
