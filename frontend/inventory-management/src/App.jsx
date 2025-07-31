@@ -6,7 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import InventoryPage from "./pages/InventoryPage";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import LoginPage from "./components/LoginPage";  // Make sure you have LoginPage.jsx created
+import LoginPage from "./components/LoginPage";  
 import SalesPage from "./pages/SalesPage";
 
 import './styles/App.css';
