@@ -19,14 +19,16 @@ const Dashboard = () => {
   const totalProducts = inventory.length;
   const totalSales = sales.length;
 
-  const lowStockItems = inventory.filter(item => item.stock <= 5);
+  const lowStockThreshold = 5; // configurable threshold
+  const lowStockItems = inventory.filter(item => item.quantity <= lowStockThreshold);
+
   const recentSales = sales.slice(-5).reverse();
 
   return (
     <div>
       <h2>Dashboard</h2>
 
-      <div>
+      <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem' }}>
         <div>
           <h3>Total Products</h3>
           <p>{totalProducts}</p>
@@ -37,16 +39,16 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div>
+      <div style={{ display: 'flex', gap: '4rem' }}>
         <div>
-          <h3>Low Stock Products</h3>
+          <h3>Low Stock Products (≤ {lowStockThreshold})</h3>
           <ul>
             {lowStockItems.length === 0 ? (
               <li>No low-stock items</li>
             ) : (
               lowStockItems.map(item => (
                 <li key={item._id}>
-                  {item.name} – {item.stock} pcs
+                  {item.name} – {item.quantity} pcs
                 </li>
               ))
             )}

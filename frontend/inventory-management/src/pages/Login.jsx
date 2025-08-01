@@ -22,10 +22,13 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // Save auth details to localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.role);
         localStorage.setItem('username', data.name);
-        navigate('/');
+
+        // Redirect to dashboard
+        navigate('/', { replace: true });
       } else {
         setMsg(data.message || 'Login failed');
       }
@@ -51,11 +54,11 @@ const Login = () => {
       {msg && <p style={{ color: 'red', marginBottom: 20 }}>{msg}</p>}
       <form onSubmit={handleLogin}>
         <div style={{ marginBottom: 15 }}>
-          <label htmlFor="email" style={{ fontWeight: '600', display: 'block', marginBottom: 6 }}>
-            Email:
+          <label htmlFor="login-email" style={{ fontWeight: '600', display: 'block', marginBottom: 6 }}>
+            Email
           </label>
           <input
-            id="email"
+            id="login-email"
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -76,11 +79,11 @@ const Login = () => {
         </div>
 
         <div style={{ marginBottom: 20 }}>
-          <label htmlFor="password" style={{ fontWeight: '600', display: 'block', marginBottom: 6 }}>
-            Password:
+          <label htmlFor="login-password" style={{ fontWeight: '600', display: 'block', marginBottom: 6 }}>
+            Password
           </label>
           <input
-            id="password"
+            id="login-password"
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
@@ -119,6 +122,17 @@ const Login = () => {
           Login
         </button>
       </form>
+
+      {/* Add register link below login form */}
+      <p style={{ marginTop: 18 }}>
+        New user?{' '}
+        <span
+          style={{ color: '#2980b9', textDecoration: 'underline', cursor: 'pointer', fontWeight: 600 }}
+          onClick={() => navigate('/register')}
+        >
+          Register here
+        </span>
+      </p>
     </div>
   );
 };
