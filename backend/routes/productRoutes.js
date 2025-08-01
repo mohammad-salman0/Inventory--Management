@@ -13,7 +13,7 @@ async function logProductMovement(productId, type, qty) {
   await InventoryMovement.create({ productId, movementType: type, quantityChanged: qty });
 }
 
-// GET all products - open or restricted to logged in users
+// GET all products -- open or restricted to logged in users
 router.get('/', auth(['admin', 'staff']), async (req, res) => {
   try {
     const products = await Product.find();
@@ -23,7 +23,7 @@ router.get('/', auth(['admin', 'staff']), async (req, res) => {
   }
 });
 
-// POST add product - admin only
+// POST add product -- admin only
 router.post('/', auth(['admin']), async (req, res) => {
   const { name, sku, price, quantity, category, imageUrl } = req.body;
   if (!name || !sku || price == null || quantity == null) {
