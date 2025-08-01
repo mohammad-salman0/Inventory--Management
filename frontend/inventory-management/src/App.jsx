@@ -25,8 +25,14 @@ const App = () => {
         {isAuthenticated && <Sidebar />}
         <main style={{ flexGrow: 1, padding: '20px' }}>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/login"
+              element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
+            />
+            <Route
+              path="/register"
+              element={isAuthenticated ? <Navigate to="/" replace /> : <Register />}
+            />
 
             {isAuthenticated ? (
               <>
